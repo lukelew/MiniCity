@@ -51,7 +51,7 @@ function init() {
     
     var loader = new GLTFLoader();
 
-    loader.load('./src/assets/hill.glb', function (gltf) {
+    loader.load('./src/assets/city.glb', function (gltf) {
 
         scene.add(gltf.scene);
 
