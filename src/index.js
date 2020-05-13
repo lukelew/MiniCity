@@ -88,7 +88,7 @@ function init() {
 
     // var light = new THREE.PointLight(0xffffff, 1, 100);
     // light.position.set(50, 50, 50);
-    const light = new THREE.DirectionalLight('#fff', 1)
+    const light = new THREE.DirectionalLight('#0ff', 1)
     light.position.set(50, 50, 50)
     scene.add(light);
 
