@@ -1,105 +1,112 @@
 
-var THREE = require('three');
+import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import * as dat from 'dat.gui';
 
 function init() {
-    // 获取浏览器窗口的宽高，后续会用
-    var width = window.innerWidth
-    var height = window.innerHeight
-
-    // 创建一个场景
     var scene = new THREE.Scene()
+    var ratio = window.innerWidth/window.innerHeight
+    var camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000)
+    camera.position.set(0,0,15)
+    camera.lookAt(0,0,1)
 
-    // 创建一个具有透视效果的摄像机
-    var camera = new THREE.PerspectiveCamera(80, width / height, 0.1, 800)
-
-    // 设置摄像机位置，并将其朝向场景中心
-    camera.position.x = 10
-    camera.position.y = 10
-    camera.position.z = 30
-    camera.lookAt(scene.position)
-
-    // 创建一个 WebGL 渲染器，Three.js 还提供 <canvas>, <svg>, CSS3D 渲染器。
-    var renderer = new THREE.WebGLRenderer({
-        alpha: true,
-        antialias: true // 开启抗齿锯效果
-    })
-    renderer.shadowMap.enabled = true
-
-    var controls = new OrbitControls(camera, renderer.domElement);
-
-    //final update loop
-    var MyUpdateLoop = function () {
-        //call the render with the scene and the camera
-        renderer.render(scene, camera);
-
-        // cube.rotation.x += 0.01;
-        // cube.rotation.y += 0.01;
-        // cube.rotation.z += 0.01;
-
-        controls.update();
-
-        //finally perform a recoursive call to update again
-        //this must be called because the mouse change the camera position
-        requestAnimationFrame(MyUpdateLoop);
-
-    };
-
-    requestAnimationFrame(MyUpdateLoop);
-
-    
-    var loader = new GLTFLoader();
-
-    loader.load('./src/assets/city.glb', function (gltf) {
-
-        scene.add(gltf.scene);
-
-    }, undefined, function (error) {
-
-        console.error(error);
-
-    });
-
-    var ambiColor = "#ffffff";
-    var ambientLight = new THREE.AmbientLight(ambiColor, 4);
-
-    // 设置渲染器的清除颜色（即背景色）和尺寸。
-    // 若想用 body 作为背景，则可以不设置 clearColor，然后在创建渲染器时设置 alpha: true，即 new THREE.WebGLRenderer({ alpha: true })
-    // renderer.setClearColor(0xffffff, 1)
-    renderer.setSize(width, height)
-
-    // 创建一个长宽高均为 4 个单位长度的立方体（几何体）
-    var cubeGeometry = new THREE.BoxGeometry(8, 8, 8)
-
-    // 创建材质（该材质不受光源影响）
-    var cubeMaterial = new THREE.MeshBasicMaterial({
-        color: 0x727ef3,
-        wireframe: true
-    })
-
-    // 创建一个立方体网格（mesh）：将材质包裹在几何体上
-    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
-
-    // 设置网格的位置
-    cube.position.x = 0
-    cube.position.y = -2
-    cube.position.z = 0
-
-    // var light = new THREE.PointLight(0xffffff, 1, 100);
-    // light.position.set(50, 50, 50);
-    const light = new THREE.DirectionalLight('#0ff', 1)
-    light.position.set(50, 50, 50)
-    scene.add(light);
-
-    // 将立方体网格加入到场景中
-    // scene.add(cube)
-    scene.add(ambientLight)
-
-    // 将渲染器的输出（此处是 canvas 元素）插入到 body 中
+    var renderer = new THREE.WebGLRenderer({ antialias : true})
+    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMapType = THREE.PCFSoftShadowMap; 
+    renderer.setClearColor(0xaaaaaa, 1.0);
     document.body.appendChild(renderer.domElement)
 
-    // 渲染，即摄像机拍下此刻的场景
-    renderer.render(scene, camera)
+    var gridHelper = new THREE.GridHelper(100, 100, 0xff0000, 0x666666);
+    // scene.add(gridHelper);
+    var axes = new THREE.AxesHelper(10)
+    scene.add(axes)
+
+    // lights part
+    var directionLight = new THREE.DirectionalLight(0xffffff, 2)
+    directionLight.position.x = 40;
+    directionLight.position.y = 10;
+    directionLight.castShadow = true
+    directionLight.shadow.camera.near = 20; //产生阴影的最近距离
+    directionLight.shadow.camera.far = 200; //产生阴影的最远距离
+    directionLight.shadow.camera.left = -50; //产生阴影距离位置的最左边位置
+    directionLight.shadow.camera.right = 50; //最右边
+    directionLight.shadow.camera.top = 50; //最上边
+    directionLight.shadow.camera.bottom = -50; //最下面
+    directionLight.shadow.mapSize.height = 1024;
+    directionLight.shadow.mapSize.width = 1024;
+    scene.add(directionLight)
+
+    var directionLighHelper = new THREE.DirectionalLightHelper(directionLight, 20);
+    scene.add(directionLighHelper);
+
+    var ambientLight = new THREE.AmbientLight(new THREE.Color(1,1,1), 1)
+    scene.add(ambientLight);
+
+    // objects part
+    var objects = []
+    var floorGeometry = new THREE.PlaneGeometry(100, 100, 1,1)
+    var floorMaterial = new THREE.MeshLambertMaterial({ color: 0x6666666, side: THREE.DoubleSide } )
+    var floor = new THREE.Mesh(floorGeometry, floorMaterial)
+    floor.rotation.x = Math.PI / 2;
+    floor.position.y = -0.1
+    floor.receiveShadow = true;
+    scene.add(floor)
+
+    var loader = new GLTFLoader();
+    loader.load('./src/assets/house.glb', function (gltf) {
+        gltf.scene.position.y = 1.5;
+        gltf.scene.position.x = 5;
+        gltf.scene.castShadow = true
+        scene.add(gltf.scene);
+        objects.push(gltf.scene)
+    })
+    loader.load('./src/assets/house.glb', function (gltf) {
+        gltf.scene.position.y = 1.5;
+        gltf.scene.position.x = 15;
+        gltf.scene.castShadow = true
+        scene.add(gltf.scene);
+    })
+
+    var boxGeometry = new THREE.BoxGeometry(1,1,1)
+    var boxMaterial = new THREE.MeshLambertMaterial()
+    boxMaterial.color = new THREE.Color(0x123456)
+    var box_mesh = new THREE.Mesh(boxGeometry, boxMaterial)
+    box_mesh.position.y = 0.5
+    box_mesh.castShadow = true
+    scene.add(box_mesh)
+    objects.push(box_mesh)
+
+
+    // controls part
+    var orbitControls = new OrbitControls(camera, renderer.domElement)
+
+    var UpdateLoop = function () {
+        renderer.render(scene, camera);
+        orbitControls.update();
+        requestAnimationFrame(UpdateLoop)
+    }
+    requestAnimationFrame(UpdateLoop)
+
+    
+    var dragControls = new DragControls(objects, camera, renderer.domElement);
+    var startColor
+    dragControls.addEventListener('dragstart', function (event) {
+        orbitControls.enabled = false;
+        startColor = event.object.material.color.getHex();
+        event.object.material.color.set(0xaaaaaa);
+    });
+
+    dragControls.addEventListener('dragend', function (event) {
+        orbitControls.enabled = true;
+        event.object.material.color.set(startColor)
+    });
+ 
+
+    // dat.Gui
+    var gui = new dat.GUI();
+    gui.add(directionLight, 'intensity', -10, 20)
 }
 init()
