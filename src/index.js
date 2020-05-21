@@ -16,11 +16,11 @@ function init() {
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.shadowMap.enabled = true;
     renderer.shadowMapType = THREE.PCFSoftShadowMap; 
-    renderer.setClearColor(0xaaaaaa, 1.0);
+    renderer.setClearColor(0x97dbf7, 1.0);
     document.body.appendChild(renderer.domElement)
 
-    var gridHelper = new THREE.GridHelper(100, 100, 0xff0000, 0x666666);
-    // scene.add(gridHelper);
+    var gridHelper = new THREE.GridHelper(100, 100, 0x666666, 0x666666);
+    scene.add(gridHelper);
     var axes = new THREE.AxesHelper(10)
     scene.add(axes)
 
@@ -29,14 +29,6 @@ function init() {
     directionLight.position.x = 40;
     directionLight.position.y = 10;
     directionLight.castShadow = true
-    directionLight.shadow.camera.near = 20; //产生阴影的最近距离
-    directionLight.shadow.camera.far = 200; //产生阴影的最远距离
-    directionLight.shadow.camera.left = -50; //产生阴影距离位置的最左边位置
-    directionLight.shadow.camera.right = 50; //最右边
-    directionLight.shadow.camera.top = 50; //最上边
-    directionLight.shadow.camera.bottom = -50; //最下面
-    directionLight.shadow.mapSize.height = 1024;
-    directionLight.shadow.mapSize.width = 1024;
     scene.add(directionLight)
 
     var directionLighHelper = new THREE.DirectionalLightHelper(directionLight, 20);
@@ -56,18 +48,16 @@ function init() {
     scene.add(floor)
 
     var loader = new GLTFLoader();
-    loader.load('./src/assets/house.glb', function (gltf) {
+    loader.load('./src/assets/road.glb', function (gltf) {
         gltf.scene.position.y = 1.5;
-        gltf.scene.position.x = 5;
         gltf.scene.castShadow = true
         scene.add(gltf.scene);
         objects.push(gltf.scene)
     })
-    loader.load('./src/assets/house.glb', function (gltf) {
-        gltf.scene.position.y = 1.5;
-        gltf.scene.position.x = 15;
+    loader.load('./src/assets/house2.glb', function (gltf) {
         gltf.scene.castShadow = true
         scene.add(gltf.scene);
+        objects.push(gltf.scene)
     })
 
     var boxGeometry = new THREE.BoxGeometry(1,1,1)
