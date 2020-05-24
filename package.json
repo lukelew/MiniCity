@@ -11,13 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "dat.gui": "^0.7.7",
-    "http-server": "^0.12.1",
+    "http-server": "^0.12.3",
+    "npm-watch": "^0.6.0",
     "stats.js": "^0.17.0",
     "three": "^0.115.0",
     "webpack": "^4.42.1"
   },
   "devDependencies": {
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.11.0"
   }
 }
