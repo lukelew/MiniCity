@@ -8,9 +8,9 @@ directionLight.castShadow = true;
 scene.add(directionLight);
 
 var directionLighHelper = new THREE.DirectionalLightHelper(directionLight, 20);
-scene.add(directionLighHelper);
+// scene.add(directionLighHelper);
 
 var ambientLight = new THREE.AmbientLight(new THREE.Color(1,1,1), 1);
 scene.add(ambientLight);
 
-export { directionLight, directionLighHelper, ambientLight }
+export { directionLight }

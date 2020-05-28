@@ -1,29 +1,30 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { DragControls } from 'three/examples/jsm/controls/DragControls';
+// import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { scene } from './scene';
-import { moveableObjects } from './objects';
-import { directionLight, directionLighHelper, ambientLight } from './lights'
+import { floor, moveableObjects } from './objects';
+import { directionLight} from './lights'
 import * as dat from 'dat.gui';
+
+var camera, renderer, mouse, raycaster;
+// var rollOverMesh, rollOverMaterial
+var onMovingObject;
+var onMovingStatus = false;
+var editMode = false;
 
 function init() {
     var ratio = window.innerWidth/window.innerHeight
-    var camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 1000);
-    camera.position.set(0,0,15);
+    camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
+    camera.position.set(0,10,50);
     camera.lookAt(0,0,1);
 
-    var renderer = new THREE.WebGLRenderer({ antialias : true});
+    renderer = new THREE.WebGLRenderer({ antialias : true});
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setClearColor(0x97dbf7, 1.0);
     document.body.appendChild(renderer.domElement);
-
-    var gridHelper = new THREE.GridHelper(100, 100, 0x666666, 0x666666);
-    scene.add(gridHelper);
-    var axes = new THREE.AxesHelper(10);
-    scene.add(axes);
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
@@ -35,21 +36,105 @@ function init() {
     }
     requestAnimationFrame(UpdateLoop);
 
-    var dragControls = new DragControls(moveableObjects, camera, renderer.domElement);
-    var startColor
-    dragControls.addEventListener('dragstart', function (event) {
-        orbitControls.enabled = false;
-        startColor = event.object.material.color.getHex();
-        event.object.material.color.set(0xaaaaaa);
-    });
+    // var dragControls = new DragControls(moveableObjects, camera, renderer.domElement);
+    // var startColor
+    // dragControls.addEventListener('dragstart', function (event) {
+    //     orbitControls.enabled = false;
+    //     startColor = event.object.material.color.getHex();
+    //     event.object.material.color.set(0xaaaaaa);
+    // });
 
-    dragControls.addEventListener('dragend', function (event) {
-        orbitControls.enabled = true;
-        event.object.material.color.set(startColor)
-    });
+    // dragControls.addEventListener('dragend', function (event) {
+    //     orbitControls.enabled = true;
+    //     event.object.material.color.set(startColor)
+    // });
 
+    // roll-over helpers
+    // var rollOverGeo = new THREE.BoxBufferGeometry(1, 1, 1);
+    // rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
+    // rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+    // scene.add(rollOverMesh);
+    // intersectedObjects.push(floor)
+
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+    
+    document.querySelector('#edit_mode').addEventListener('click', switchEditMode)
+   
     // dat.Gui
     var gui = new dat.GUI();
     gui.add(directionLight, 'intensity', -10, 20)
 }
+
+function mouseDownToSelectObj(e) {
+    e.preventDefault();
+    if(!onMovingStatus){
+        mouse.set((e.clientX / window.innerWidth) * 2 - 1, - (e.clientY / window.innerHeight) * 2 + 1);
+        raycaster.setFromCamera(mouse, camera);
+        var intersects = raycaster.intersectObjects(moveableObjects, true);
+        console.log(moveableObjects);
+        if (intersects.length > 0) {
+            var intersect = intersects[0];
+            if (intersect.object.parent.type != "Scene"){
+                onMovingObject = intersect.object.parent.parent.clone()
+                scene.remove(intersect.object.parent.parent)
+                moveableObjects.splice(moveableObjects.indexOf(intersect.object.parent.parent), 1)
+            }
+            else{
+                onMovingObject = intersect.object.clone()
+                scene.remove(intersect.object)
+                moveableObjects.splice(moveableObjects.indexOf(intersect.object), 1)
+            }
+            scene.add(onMovingObject)
+            moveableObjects.push(onMovingObject)
+            document.addEventListener('mousemove', movingObject, false);
+            onMovingStatus = true
+            
+        }
+    }
+    else{
+        document.removeEventListener('mousemove', movingObject, false);
+        onMovingStatus = false
+    }
+    
+}
+
+function movingObject(e) {
+    e.preventDefault();
+    mouse.set((e.clientX / window.innerWidth) * 2 - 1, - (e.clientY / window.innerHeight) * 2 + 1);
+    raycaster.setFromCamera(mouse, camera);
+    var intersect = raycaster.intersectObject(floor)
+    if (intersect.length > 0 ) {
+        var movedToPoint = intersect[0].point
+        movedToPoint.y = Math.abs(movedToPoint.y)
+        onMovingObject.position.copy(movedToPoint).add(intersect[0].face.normal);
+        onMovingObject.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
+        
+        renderer.render(scene, camera);
+    }
+    
+}
+
+
+// enter and exit editting mode
+function switchEditMode() {
+    if (!editMode) {
+        var gridHelper = new THREE.GridHelper(100, 100, 0x3cd7d9, 0x3cd7d9);
+        gridHelper.name = 'gridHelper';
+        gridHelper.position.y = 0.1;
+        scene.add(gridHelper);
+        document.addEventListener('mousedown', mouseDownToSelectObj, false);
+        document.querySelector('#edit_mode em').innerHTML = 'Exit'
+        editMode = true
+    }
+    else{
+        var selectedObj = scene.getObjectByName('gridHelper')
+        scene.remove(selectedObj)
+        document.removeEventListener('mousedown', mouseDownToSelectObj, false);
+        document.querySelector('#edit_mode em').innerHTML = 'Edit Mode'
+        editMode = false
+    }
+    
+}
+
 init()

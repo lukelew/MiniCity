@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+body {
+    background: linear-gradient(#d5e966, #3f95b9);
+}
+#UIbox {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+#edit_mode {
+    display: inline-block;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;;
+    background: #1a1a1a;
+    border-left: 3px solid #2FA1D6;
+}
+#edit_mode i{
+    margin: 0 4px 0 0;
+}
+#edit_mode em {
+    font-style: normal;
+}
