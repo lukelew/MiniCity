@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { scene } from './scene';
 import { floor, moveableObjects } from './objects';
-import { directionLight} from './lights'
+import { directionLight, ambientLight } from './lights';
 import * as dat from 'dat.gui';
 
 var camera, renderer, mouse, raycaster;
@@ -21,8 +21,8 @@ function init() {
 
     renderer = new THREE.WebGLRenderer({ antialias : true});
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMapEnabled = true;
+    renderer.shadowMapType = THREE.PCFSoftShadowMap;
     renderer.setClearColor(0x97dbf7, 1.0);
     document.body.appendChild(renderer.domElement);
 
@@ -58,9 +58,9 @@ function init() {
 
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
-    
+
     document.querySelector('#edit_mode').addEventListener('click', switchEditMode)
-   
+
     // dat.Gui
     var gui = new dat.GUI();
     gui.add(directionLight, 'intensity', -10, 20)
@@ -89,14 +89,14 @@ function mouseDownToSelectObj(e) {
             moveableObjects.push(onMovingObject)
             document.addEventListener('mousemove', movingObject, false);
             onMovingStatus = true
-            
+
         }
     }
     else{
         document.removeEventListener('mousemove', movingObject, false);
         onMovingStatus = false
     }
-    
+
 }
 
 function movingObject(e) {
@@ -109,10 +109,10 @@ function movingObject(e) {
         movedToPoint.y = Math.abs(movedToPoint.y)
         onMovingObject.position.copy(movedToPoint).add(intersect[0].face.normal);
         onMovingObject.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
-        
+
         renderer.render(scene, camera);
     }
-    
+
 }
 
 
@@ -134,7 +134,7 @@ function switchEditMode() {
         document.querySelector('#edit_mode em').innerHTML = 'Edit Mode'
         editMode = false
     }
-    
+
 }
 
 init()
