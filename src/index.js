@@ -1,14 +1,12 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-// import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { scene } from './scene';
 import { floor, moveableObjects } from './objects';
 import { directionLight, ambientLight, spotLight } from './lights';
 import * as dat from 'dat.gui';
 
 var camera, renderer, mouse, raycaster;
-// var rollOverMesh, rollOverMaterial
 var onMovingObject;
 var onMovingStatus = false;
 var editMode = false;
@@ -35,26 +33,6 @@ function init() {
         requestAnimationFrame(UpdateLoop);
     }
     requestAnimationFrame(UpdateLoop);
-
-    // var dragControls = new DragControls(moveableObjects, camera, renderer.domElement);
-    // var startColor
-    // dragControls.addEventListener('dragstart', function (event) {
-    //     orbitControls.enabled = false;
-    //     startColor = event.object.material.color.getHex();
-    //     event.object.material.color.set(0xaaaaaa);
-    // });
-
-    // dragControls.addEventListener('dragend', function (event) {
-    //     orbitControls.enabled = true;
-    //     event.object.material.color.set(startColor)
-    // });
-
-    // roll-over helpers
-    // var rollOverGeo = new THREE.BoxBufferGeometry(1, 1, 1);
-    // rollOverMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
-    // rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
-    // scene.add(rollOverMesh);
-    // intersectedObjects.push(floor)
 
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();

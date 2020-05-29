@@ -37,7 +37,7 @@ loader.load('./src/assets/house.glb', function (gltf) {
         }
     });
     console.log(gltf);
-    gltf.scene.position.y = 1.5;
+    gltf.scene.position.y = 0;
     gltf.scene.name = 'House'
     scene.add(gltf.scene)
     moveableObjects.push(gltf.scene);
