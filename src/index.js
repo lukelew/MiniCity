@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 // import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import { scene } from './scene';
 import { floor, moveableObjects } from './objects';
-import { directionLight, ambientLight } from './lights';
+import { directionLight, ambientLight, spotLight } from './lights';
 import * as dat from 'dat.gui';
 
 var camera, renderer, mouse, raycaster;
@@ -19,10 +19,10 @@ function init() {
     camera.position.set(0,10,50);
     camera.lookAt(0,0,1);
 
-    renderer = new THREE.WebGLRenderer({ antialias : true});
+    renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMapEnabled = true;
-    renderer.shadowMapType = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.setClearColor(0x97dbf7, 1.0);
     document.body.appendChild(renderer.domElement);
 
@@ -63,7 +63,7 @@ function init() {
 
     // dat.Gui
     var gui = new dat.GUI();
-    gui.add(directionLight, 'intensity', -10, 20)
+    gui.add(directionLight, 'intensity', -10, 20);
 }
 
 function mouseDownToSelectObj(e) {

@@ -18,7 +18,7 @@ var box = new THREE.Mesh(boxGeometry, boxMaterial);
 box.name = 'box11'
 box.position.set(10, 0.5, 0)
 box.castShadow = true;
-box.receiveShadow = true;
+//box.receiveShadow = true;
 scene.add(box)
 moveableObjects.push(box)
 
@@ -26,7 +26,7 @@ var box2 = box.clone()
 box2.name = 'box22'
 box2.position.set(20, 0.5, 0)
 box2.castShadow = true;
-box2.receiveShadow = true;
+//box2.receiveShadow = true;
 scene.add(box2)
 moveableObjects.push(box2)
 
