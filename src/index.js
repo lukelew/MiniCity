@@ -40,9 +40,18 @@ function init() {
     document.querySelector('#edit_mode').addEventListener('click', switchEditMode)
 
     // dat.Gui
+    initGui();
+}
+function initGui(){
+    var guiControls = new function(){
+        this.color = directionLight.color.getStyle();
+    };
+
     var gui = new dat.GUI();
     gui.add(directionLight, 'intensity', -10, 20);
+    gui.addColor(guiControls, 'color').onChange(function (e){directionLight.color.setStyle(e);});
 }
+
 
 function mouseDownToSelectObj(e) {
     e.preventDefault();
