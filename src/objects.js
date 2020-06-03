@@ -193,7 +193,7 @@ loader.load('./src/assets/shop.glb', function (gltf) {
         }
     });
     console.log(gltf);
-    gltf.scene.position.set(-18.39, 0.8,-10);
+    gltf.scene.position.set(-18.7, 0.1,-9.5);
     gltf.scene.scale.set(1.5, 1.5,1.5);
     gltf.scene.name = 'shop'
     scene.add(gltf.scene)
