@@ -17,10 +17,10 @@ body {
     width: 100px;
     height: 30px;
     line-height: 30px;
-    text-align: center;
     color: #fff;
     font-size: 14px;;
     background: #1a1a1a;
+    padding: 0 0 0 5px;
     border-left: 3px solid #2FA1D6;
     border-bottom: 1px solid #2c2c2c;
 }
@@ -40,11 +40,17 @@ body {
     height: 30px;
     font-size: 14px;;
     background: #1a1a1a;
+    padding: 0 0 0 5px;
     border-left: 3px solid #2FA1D6;
 }
 #bgm span {
     display: block;
     line-height: 30px;
-    text-align: center;
     color: #fff;
+}
+#bgm i{
+    margin: 0 4px 0 0;
+}
+#bgm em {
+    font-style: normal;
 }

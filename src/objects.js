@@ -6,12 +6,20 @@ var loader = new GLTFLoader();
 var moveableObjects = [];
 
 var floorGeometry = new THREE.PlaneGeometry(50, 50);
-var floorMaterial = new THREE.MeshLambertMaterial({ color: 0x999999, side: THREE.DoubleSide});
+var floorMaterial = new THREE.MeshLambertMaterial({ color: 0x365931, side: THREE.DoubleSide});
 var floor = new THREE.Mesh(floorGeometry, floorMaterial);
 floor.rotation.x = Math.PI / 2;
 floor.receiveShadow = true;
+floor.name = "Floor"
 scene.add(floor)
 
+var earthGeometry = new THREE.BoxGeometry(50, 50, 4);
+var earthMaterial = new THREE.MeshLambertMaterial({ color: 0x3a291b })
+var earth = new THREE.Mesh(earthGeometry, earthMaterial)
+earth.rotation.x = Math.PI / 2;
+earth.position.y = -2.05;
+earth.name = "Earth"
+scene.add(earth)
 
 loader.load('./src/assets/house.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
