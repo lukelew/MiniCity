@@ -40,16 +40,21 @@ function init() {
     document.querySelector('#edit_mode').addEventListener('click', switchEditMode)
 
     // dat.Gui
-    initGui();
-}
-function initGui(){
     var guiControls = new function(){
         this.color = directionLight.color.getStyle();
+        this.positionx = 0;
     };
 
     var gui = new dat.GUI();
     gui.add(directionLight, 'intensity', -10, 20);
+    gui.add(guiControls, 'positionx', -5, 5);
     gui.addColor(guiControls, 'color').onChange(function (e){directionLight.color.setStyle(e);});
+    render();
+    function render(){
+        directionLight.position.x += guiControls.positionx;
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    }
 }
 
 
