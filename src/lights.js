@@ -7,11 +7,10 @@ var directionLight = new THREE.DirectionalLight(0xffffff, 2)
 directionLight.position.x = 80;
 directionLight.position.y = 20;
 directionLight.castShadow = true;
-directionLight.distance = 0;
-directionLight.shadow.mapSize.width = 2048;
-directionLight.shadow.mapSize.height = 2048;
-directionLight.shadow.camera.left = -32;
-directionLight.shadow.camera.right = 32;
+directionLight.shadow.camera.left = -50;
+directionLight.shadow.camera.right = 50;
+directionLight.shadow.camera.top = 50
+directionLight.shadow.camera.bottom = -50
 directionLight.target = floor;
 scene.add(directionLight);
 
@@ -37,5 +36,4 @@ scene.add(ambientLight);
 
 export { directionLight };
 export { ambientLight };
-//export { lensFlare }
 export { spotLight };

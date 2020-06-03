@@ -106,7 +106,7 @@ function movingObject(e) {
 // enter and exit editting mode
 function switchEditMode() {
     if (!editMode) {
-        var gridHelper = new THREE.GridHelper(100, 100, 0x3cd7d9, 0x3cd7d9);
+        var gridHelper = new THREE.GridHelper(100, 100, 0xf27878, 0x3cd7d9);
         gridHelper.name = 'gridHelper';
         gridHelper.position.y = 0.1;
         scene.add(gridHelper);
@@ -123,5 +123,18 @@ function switchEditMode() {
     }
 
 }
-
+var playbutton = document.querySelector('#bgm_play')
+var audio = document.querySelector('#bgm audio')
+// bgm controls 
+playbutton.addEventListener('click', switchBgm)
+function switchBgm() {
+    if (audio.paused){
+        audio.play()
+        playbutton.innerHTML = "Pause"
+    }
+    else{
+        audio.pause()
+        playbutton.innerHTML = "BGM"
+    }
+}
 init()
