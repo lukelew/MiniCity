@@ -111,7 +111,7 @@ function movingObject(e) {
 // enter and exit editting mode
 function switchEditMode() {
     if (!editMode) {
-        var gridHelper = new THREE.GridHelper(100, 100, 0xf27878, 0x3cd7d9);
+        var gridHelper = new THREE.GridHelper(50, 50, 0xf27878, 0x3cd7d9);
         gridHelper.name = 'gridHelper';
         gridHelper.position.y = 0.1;
         scene.add(gridHelper);
@@ -135,11 +135,11 @@ playbutton.addEventListener('click', switchBgm)
 function switchBgm() {
     if (audio.paused){
         audio.play()
-        playbutton.innerHTML = "Pause"
+        document.querySelector('#bgm_play em').innerHTML = "Pause"
     }
     else{
         audio.pause()
-        playbutton.innerHTML = "BGM"
+        document.querySelector('#bgm_play em').innerHTML = "BGM"
     }
 }
 init()
