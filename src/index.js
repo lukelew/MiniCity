@@ -55,6 +55,13 @@ function init() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
+    window.addEventListener( 'resize', onWindowResize, false );
+}
+function onWindowResize() {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	controls.handleResize();
 }
 
 
@@ -130,7 +137,7 @@ function switchEditMode() {
 }
 var playbutton = document.querySelector('#bgm_play')
 var audio = document.querySelector('#bgm audio')
-// bgm controls 
+// bgm controls
 playbutton.addEventListener('click', switchBgm)
 function switchBgm() {
     if (audio.paused){
