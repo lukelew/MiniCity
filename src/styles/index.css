@@ -22,10 +22,29 @@ body {
     font-size: 14px;;
     background: #1a1a1a;
     border-left: 3px solid #2FA1D6;
+    border-bottom: 1px solid #2c2c2c;
 }
 #edit_mode i{
     margin: 0 4px 0 0;
 }
 #edit_mode em {
     font-style: normal;
+}
+
+#bgm {
+    position: fixed;
+    left: 0;
+    top: 31px;
+    z-index: 100;
+    width: 100px;
+    height: 30px;
+    font-size: 14px;;
+    background: #1a1a1a;
+    border-left: 3px solid #2FA1D6;
+}
+#bgm span {
+    display: block;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
 }
