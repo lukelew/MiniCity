@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { scene } from './scene';
-import { floor, moveableObjects } from './objects';
+import { floor } from './objects';
 import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare.js';
 
 var directionLight = new THREE.DirectionalLight(0xffffff, 2)
