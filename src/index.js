@@ -108,12 +108,13 @@ for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
 geometry.computeVertexNormals();
 
 var material = new THREE.MeshLambertMaterial({
-  color: 0x6E915B,
+  color: 0x3E2E20,
   side: THREE.DoubleSide,
 });
 var mesh = new THREE.Mesh(geometry, material);
-mesh.position.set(-15.360, -15.74, 10.060);
-mesh.scale.set(0.5,0.3,0.8);
+mesh.position.set(-0.600, -6.900, 19.770);
+mesh.rotation.set(23.490, 6.90, 4.650);
+mesh.scale.set(0.25, -0.330, -0.200);
 scene.add(mesh);
 }
 
