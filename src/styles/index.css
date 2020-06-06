@@ -8,15 +8,15 @@ body {
 }
 #UIbox {
     position: fixed;
-    left: 0;
+    right: 300px;
     top: 0;
     z-index: 10;
 }
 #edit_mode {
     display: inline-block;
     width: 100px;
-    height: 30px;
-    line-height: 30px;
+    height: 27px;
+    line-height: 27px;
     color: #fff;
     font-size: 14px;;
     background: #1a1a1a;
@@ -25,19 +25,21 @@ body {
     border-bottom: 1px solid #2c2c2c;
 }
 #edit_mode i{
+    width: 14px;
     margin: 0 4px 0 0;
 }
 #edit_mode em {
     font-style: normal;
+    font-size: 11px;
 }
 
 #bgm {
     position: fixed;
-    left: 0;
-    top: 31px;
+    right: 300px;
+    top: 28px;
     z-index: 100;
     width: 100px;
-    height: 30px;
+    height: 27px;
     font-size: 14px;;
     background: #1a1a1a;
     padding: 0 0 0 5px;
@@ -45,10 +47,12 @@ body {
 }
 #bgm span {
     display: block;
-    line-height: 30px;
+    line-height: 27px;
     color: #fff;
+    font-size: 11px;
 }
 #bgm i{
+    width: 14px;
     margin: 0 4px 0 0;
 }
 #bgm em {
