@@ -26,11 +26,6 @@ lensFlare.addElement(new LensflareElement(textureFlare0, 500,0));
 
 directionLight.add(lensFlare);
 
-
-
-var directionLighHelper = new THREE.DirectionalLightHelper(directionLight, 50);
-scene.add(directionLighHelper);
-
 var ambientLight = new THREE.AmbientLight(new THREE.Color(1,1,1), 1);
 scene.add(ambientLight);
 
