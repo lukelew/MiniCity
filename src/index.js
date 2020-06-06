@@ -11,6 +11,10 @@ var onMovingObject;
 var onMovingStatus = false;
 var editMode = false;
 
+
+
+
+
 function init() {
     var ratio = window.innerWidth/window.innerHeight
     camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);

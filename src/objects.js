@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { scene } from './scene';
+import { Ocean } from 'three/examples/jsm/misc/Ocean.js'
 
 var loader = new GLTFLoader();
 var moveableObjects = [];
@@ -21,6 +22,15 @@ earth.position.y = -2.05;
 earth.name = "Earth"
 scene.add(earth)
 
+var lakeGeometry = new THREE.BoxGeometry(10, 10, 0.01);
+var lakeMaterial = new THREE.MeshLambertMaterial({ color: 0x3a291b })
+var lake = new THREE.Mesh(lakeGeometry, lakeMaterial)
+lake.rotation.x = Math.PI / 2;
+lake.position.y = 3;
+lake.position.x = 15;
+lake.position.z = 15;
+lake.name = "lake"
+scene.add(lake)
 
 loader.load('./src/assets/building2.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
@@ -101,16 +111,16 @@ loader.load('./src/assets/shop.glb', function (gltf) {
     moveableObjects.push(gltf.scene);
 });
 
-loader.load('./src/assets/hospital.glb', function (gltf) {
+loader.load('./src/assets/hospital1.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {
             node.castShadow = true;
         }
     });
     console.log(gltf);
-    gltf.scene.position.set(-5.9, 2.35,-12.8);
-    gltf.scene.rotateY(Math.PI/2);
-    gltf.scene.scale.set(6.15, 6.15, 6.15);
+    gltf.scene.position.set(-8.4, 0,-10);
+    gltf.scene.rotateY(4.7);
+    gltf.scene.scale.set(1.5, 1.5, 1.5);
     gltf.scene.name = 'hospital'
     scene.add(gltf.scene)
     moveableObjects.push(gltf.scene);
@@ -122,7 +132,7 @@ loader.load('./src/assets/redbuilding(withgarden).glb', function (gltf) {
         }
     });
     console.log(gltf);
-    gltf.scene.position.set(8.8, 2.65,0.05);
+    gltf.scene.position.set(5.7, 0, 0.05);
     gltf.scene.rotateY(Math.PI);
     gltf.scene.scale.set(2.5, 2.5, 2.5);
     gltf.scene.name = 'redbuilding'
@@ -196,7 +206,7 @@ loader.load('./src/assets/houses3.glb', function (gltf) {
         }
     });
     console.log(gltf);
-    gltf.scene.position.set(1.5,2,-18.3);
+    gltf.scene.position.set(1.5,0,-18.3);
     gltf.scene.rotateY(131.9)
     gltf.scene.name = 'housegrey1.1'
     scene.add(gltf.scene)
@@ -221,7 +231,7 @@ loader.load('./src/assets/houses3.glb', function (gltf) {
         }
     });
     console.log(gltf);
-    gltf.scene.position.set(8.5,2,-18.3);
+    gltf.scene.position.set(8.5,0,-18.3);
     gltf.scene.rotateY(131.9)
     gltf.scene.name = 'housegrey1.2'
     scene.add(gltf.scene)
