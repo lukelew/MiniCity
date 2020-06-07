@@ -1,29 +1,30 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { scene } from './scene';
-import { floor, moveableObjects } from './objects';
-import { directionLight, ambientLight, spotLight } from './lights';
+import { camera } from './camera';
+import { renderer } from './renderer';
+import { floor, moveableObjects} from './objects';
+import { directionLight } from './lights';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
-import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
 
-var camera, renderer, mouse, raycaster;
+var mouse, raycaster;
 var onMovingObject;
 var onMovingStatus = false;
 var editMode = false;
 
 function init() {
-    var ratio = window.innerWidth/window.innerHeight
-    camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
-    camera.position.set(0,10,50);
-    camera.lookAt(0,0,1);
+    // var ratio = window.innerWidth/window.innerHeight
+    // camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
+    // camera.position.set(0,10,50);
+    // camera.lookAt(0,0,1);
 
-    renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setClearColor(0x97dbf7, 1.0);
-    document.body.appendChild(renderer.domElement);
+    // renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // renderer.setClearColor(0x97dbf7, 1.0);
+    // document.body.appendChild(renderer.domElement);
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
@@ -52,79 +53,24 @@ function init() {
     gui.add(directionLight, 'intensity', -10, 20);
     gui.add(guiControls, 'positionx', -5, 5);
     gui.addColor(guiControls, 'color').onChange(function (e){directionLight.color.setStyle(e);});
-    render();
+
     function render(){
         directionLight.position.x += guiControls.positionx;
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
+
     window.addEventListener( 'resize', onWindowResize, false );
-
-    create();
-}
-//terrain//
-function create(){
-    function funZ(width, height) {
-    var size = width * height;
-    var data = new Uint8Array(size);
-    var perlin = new ImprovedNoise();
-  // 控制地面显示效果  可以尝试0.01  0.1  1等不值
-  // 0.1凹凸不平的地面效果  1山脉地形效果
-    var quality = 1;
-  // z值不同每次执行随机出来的地形效果不同
-    var z = 70000;
-    for (var j = 0; j < 4; j++) {
-        for (var i = 0; i < size; i++) {
-      // x的值0 1 2 3 4 5 6...
-        var x = i % width;
-      // ~表示按位取反 两个~就是按位取反后再取反
-      // ~~相当于Math.floor(),效率高一点
-      // y重复若干个值
-        var y = ~~(i / width);
-      // 通过噪声生成数据
-        data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
-        console.log(y);
-            }
-    // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
-        quality *= 5;
-        }
-
-    return data;
-
+    function onWindowResize() {
+    	camera.aspect = window.innerWidth / window.innerHeight;
+    	camera.updateProjectionMatrix();
+    	renderer.setSize( window.innerWidth, window.innerHeight );
     }
-var width = 50, height = 50;
-// 生成地形顶点高度数据
-var data = funZ(width, height);
-//创建一个平面地形，行列两个方向顶点数据分别为width，height
-var geometry = new THREE.PlaneBufferGeometry(40, 40, width - 1, height - 1);
-geometry.rotateX(-Math.PI / 2);
-// 访问几何体的顶点位置坐标数据
-var vertices = geometry.attributes.position.array;
-// 改变顶点高度值
-for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-  vertices[j + 1] = data[i] * 0.8;
-}
-// 不执行computeVertexNormals，没有顶点法向量数据
-geometry.computeVertexNormals();
-
-var material = new THREE.MeshLambertMaterial({
-  color: 0x3E2E20,
-  side: THREE.DoubleSide,
-});
-var mesh = new THREE.Mesh(geometry, material);
-mesh.position.set(-0.600, -6.900, 19.770);
-mesh.rotation.set(23.490, 6.90, 4.650);
-mesh.scale.set(0.25, -0.330, -0.200);
-scene.add(mesh);
+    
+    render();
 }
 
-//terrain//
 
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-}
 
 function mouseDownToSelectObj(e) {
     e.preventDefault();
