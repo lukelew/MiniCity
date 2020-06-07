@@ -1,37 +1,37 @@
-
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { scene } from './scene';
-import { floor, moveableObjects } from './objects';
-import { directionLight, ambientLight, spotLight } from './lights';
+import { camera } from './camera';
+import { renderer } from './renderer';
+import { floor, moveableObjects} from './objects';
+import { directionLight } from './lights';
+import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
 
-var camera, renderer, mouse, raycaster;
+var mouse, raycaster;
 var onMovingObject;
 var onMovingStatus = false;
 var editMode = false;
 
-
-
-
-
 function init() {
-    var ratio = window.innerWidth/window.innerHeight
-    camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
-    camera.position.set(0,10,50);
-    camera.lookAt(0,0,1);
+    // var ratio = window.innerWidth/window.innerHeight
+    // camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
+    // camera.position.set(0,10,50);
+    // camera.lookAt(0,0,1);
 
-    renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    renderer.setClearColor(0x97dbf7, 1.0);
-    document.body.appendChild(renderer.domElement);
+    // renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.shadowMap.enabled = true;
+    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // renderer.setClearColor(0x97dbf7, 1.0);
+    // document.body.appendChild(renderer.domElement);
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
 
     var UpdateLoop = function () {
+        stats.begin();
+        stats.end();
         renderer.render(scene, camera);
         orbitControls.update();
         requestAnimationFrame(UpdateLoop);
@@ -53,18 +53,21 @@ function init() {
     gui.add(directionLight, 'intensity', -10, 20);
     gui.add(guiControls, 'positionx', -5, 5);
     gui.addColor(guiControls, 'color').onChange(function (e){directionLight.color.setStyle(e);});
-    render();
+
     function render(){
         directionLight.position.x += guiControls.positionx;
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
+
     window.addEventListener( 'resize', onWindowResize, false );
     function onWindowResize() {
     	camera.aspect = window.innerWidth / window.innerHeight;
     	camera.updateProjectionMatrix();
     	renderer.setSize( window.innerWidth, window.innerHeight );
     }
+    
+    render();
 }
 
 
@@ -75,7 +78,6 @@ function mouseDownToSelectObj(e) {
         mouse.set((e.clientX / window.innerWidth) * 2 - 1, - (e.clientY / window.innerHeight) * 2 + 1);
         raycaster.setFromCamera(mouse, camera);
         var intersects = raycaster.intersectObjects(moveableObjects, true);
-        console.log(moveableObjects);
         if (intersects.length > 0) {
             var intersect = intersects[0];
             if (intersect.object.parent.type != "Scene"){
@@ -111,13 +113,16 @@ function movingObject(e) {
         var movedToPoint = intersect[0].point
         movedToPoint.y = Math.abs(movedToPoint.y)
         onMovingObject.position.copy(movedToPoint).add(intersect[0].face.normal);
-        onMovingObject.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0.5);
-
+        onMovingObject.position.divideScalar(1).floor().multiplyScalar(1).addScalar(0);
         renderer.render(scene, camera);
     }
 
 }
 
+// stats config
+var stats = new Stats();
+stats.showPanel(0);
+document.querySelector('#stats').appendChild(stats.dom);
 
 // enter and exit editting mode
 function switchEditMode() {
@@ -139,9 +144,10 @@ function switchEditMode() {
     }
 
 }
+
+// bgm controls
 var playbutton = document.querySelector('#bgm_play')
 var audio = document.querySelector('#bgm audio')
-// bgm controls
 playbutton.addEventListener('click', switchBgm)
 function switchBgm() {
     if (audio.paused){
@@ -153,4 +159,5 @@ function switchBgm() {
         document.querySelector('#bgm_play em').innerHTML = "BGM"
     }
 }
+
 init()
