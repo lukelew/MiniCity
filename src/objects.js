@@ -22,7 +22,138 @@ earth.position.y = -2.05;
 earth.name = "Earth"
 scene.add(earth)
 
-
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(22.9,0,22.3);
+    gltf.scene.name = 'forest1.1'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(22.9,0,17.8);
+    gltf.scene.name = 'forest2.1'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(22.9,0,13);
+    gltf.scene.name = 'forest3.1'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(18.7,0,22.3);
+    gltf.scene.name = 'forest1.2'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(18.7,0,17.8);
+    gltf.scene.name = 'forest2.2'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(18.7,0,13);
+    gltf.scene.name = 'forest3.2'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(14.5,0,22.3);
+    gltf.scene.name = 'forest1.3'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(14.5,0,17.8);
+    gltf.scene.name = 'forest2.3'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(14.5,0,13);
+    gltf.scene.name = 'forest3.3'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(10.3,0,22.3);
+    gltf.scene.name = 'forest1.4'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(10.3,0,17.8);
+    gltf.scene.name = 'forest2.4'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/forest.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(10.3,0,13);
+    gltf.scene.name = 'forest3.4'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
 loader.load('./src/assets/building2.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {
