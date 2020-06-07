@@ -3,7 +3,7 @@ import { scene } from './scene';
 import { floor } from './objects';
 import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare.js';
 
-var directionLight = new THREE.DirectionalLight(0xffffff, 2)
+var directionLight = new THREE.DirectionalLight(0xffffff, 0.8)
 directionLight.position.x = 80;
 directionLight.position.y = 20;
 directionLight.castShadow = true;

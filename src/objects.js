@@ -96,32 +96,34 @@ loader.load('./src/assets/shop.glb', function (gltf) {
     moveableObjects.push(gltf.scene);
 });
 
-loader.load('./src/assets/hospital.glb', function (gltf) {
+loader.load('./src/assets/hospital1.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {
             node.castShadow = true;
         }
     });
-    gltf.scene.position.set(-5.9, 2.35,-12.8);
-    gltf.scene.rotateY(Math.PI/2);
-    gltf.scene.scale.set(6.15, 6.15, 6.15);
+    gltf.scene.position.set(-8.4, 0, -10);
+    gltf.scene.rotateY(4.7);
+    gltf.scene.scale.set(1.5, 1.5, 1.5);
     gltf.scene.name = 'hospital'
     scene.add(gltf.scene)
     moveableObjects.push(gltf.scene);
 });
+
 loader.load('./src/assets/redbuilding(withgarden).glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {
             node.castShadow = true;
         }
     });
-    gltf.scene.position.set(8.8, 2.65,0.05);
+    gltf.scene.position.set(5.7, 0, 0.05);
     gltf.scene.rotateY(Math.PI);
     gltf.scene.scale.set(2.5, 2.5, 2.5);
     gltf.scene.name = 'redbuilding'
     scene.add(gltf.scene)
     moveableObjects.push(gltf.scene);
 });
+
 loader.load('./src/assets/floor.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {
@@ -183,7 +185,7 @@ loader.load('./src/assets/houses3.glb', function (gltf) {
             node.castShadow = true;
         }
     });
-    gltf.scene.position.set(1.5,2,-18.3);
+    gltf.scene.position.set(1.5, 0, -20);
     gltf.scene.rotateY(131.9)
     gltf.scene.name = 'housegrey1.1'
     scene.add(gltf.scene)
@@ -206,7 +208,7 @@ loader.load('./src/assets/houses3.glb', function (gltf) {
             node.castShadow = true;
         }
     });
-    gltf.scene.position.set(8.5,2,-18.3);
+    gltf.scene.position.set(8.5, 0, -20);
     gltf.scene.rotateY(131.9)
     gltf.scene.name = 'housegrey1.2'
     scene.add(gltf.scene)
@@ -291,18 +293,6 @@ loader.load('./src/assets/parking.glb', function (gltf) {
 });
 
 
-loader.load('./src/assets/hill.glb', function (gltf) {
-    gltf.scene.traverse(function (node) {
-        if (node.isMesh) {
-            node.castShadow = true;
-        }
-    });
-    gltf.scene.position.set(0.0,0,17.5);
-    gltf.scene.rotation.set(3.14, 0.0, 3.14);
-    gltf.scene.scale.set(0.7, 1.0, 0.5);
-    gltf.scene.name = 'hill'
-    scene.add(gltf.scene)
-});
 loader.load('./src/assets/factory.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
         if (node.isMesh) {

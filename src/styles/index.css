@@ -4,7 +4,7 @@
     font-family: sans-serif;
 }
 body {
-    background: linear-gradient(#d5e966, #3f95b9);
+    /* background: linear-gradient(#d5e966, #3f95b9); */
 }
 #UIbox {
     position: fixed;
