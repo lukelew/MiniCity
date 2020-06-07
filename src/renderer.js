@@ -7,4 +7,5 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.setClearColor(0x97dbf7, 1.0);
 document.body.appendChild(renderer.domElement);
 
+
 export { renderer }

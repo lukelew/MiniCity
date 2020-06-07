@@ -60,6 +60,7 @@ function init() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
+    render();
 
     window.addEventListener( 'resize', onWindowResize, false );
 
