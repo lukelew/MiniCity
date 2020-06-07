@@ -1,8 +1,9 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { scene } from './scene';
 import { camera } from './camera';
 import { renderer } from './renderer';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { Sky } from 'three/examples/jsm/objects/Sky';
 import { floor, moveableObjects} from './objects';
 import { directionLight } from './lights';
 import * as Stats from 'stats.js';
@@ -14,17 +15,43 @@ var onMovingStatus = false;
 var editMode = false;
 
 function init() {
-    // var ratio = window.innerWidth/window.innerHeight
-    // camera = new THREE.PerspectiveCamera(45, ratio, 0.1, 10000);
-    // camera.position.set(0,10,50);
-    // camera.lookAt(0,0,1);
 
-    // renderer = new THREE.WebGLRenderer({ antialias : true, alpha : true});
-    // renderer.setSize(window.innerWidth, window.innerHeight);
-    // renderer.shadowMap.enabled = true;
-    // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // renderer.setClearColor(0x97dbf7, 1.0);
-    // document.body.appendChild(renderer.domElement);
+    var sky = new Sky();
+    var uniforms = sky.material.uniforms;
+
+    uniforms['turbidity'].value = 10;
+    uniforms['rayleigh'].value = 2;
+    uniforms['luminance'].value = 1;
+    uniforms['mieCoefficient'].value = 0.005;
+    uniforms['mieDirectionalG'].value = 0.8;
+
+    var parameters = {
+        distance: 400,
+        inclination: 0.49,
+        azimuth: 0.205
+    };
+
+    var cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, { format: THREE.RGBFormat, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
+    var cubeCamera = new THREE.CubeCamera(0.1, 1, cubeRenderTarget);
+
+    scene.background = new THREE.Color(0x97dbf7);
+
+    function updateSun() {
+
+        var theta = Math.PI * (parameters.inclination - 0.5);
+        var phi = 2 * Math.PI * (parameters.azimuth - 0.5);
+
+        directionLight.position.x = parameters.distance * Math.cos(phi);
+        directionLight.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
+        directionLight.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta);
+
+        sky.material.uniforms['sunPosition'].value = directionLight.position.copy(directionLight.position);
+
+        cubeCamera.update(renderer, sky);
+
+    }
+
+    updateSun();
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
@@ -44,18 +71,15 @@ function init() {
     document.querySelector('#edit_mode').addEventListener('click', switchEditMode)
 
     // dat.Gui
-    var guiControls = new function(){
-        this.color = directionLight.color.getStyle();
-        this.positionx = 0;
-    };
-
     var gui = new dat.GUI();
     gui.add(directionLight, 'intensity', -10, 20);
-    gui.add(guiControls, 'positionx', -5, 5);
-    gui.addColor(guiControls, 'color').onChange(function (e){directionLight.color.setStyle(e);});
-
+    
+    var folder = gui.addFolder('Sky');
+    folder.add(parameters, 'inclination', 0, 0.5, 0.0001).onChange(updateSun);
+    folder.add(parameters, 'azimuth', 0, 1, 0.0001).onChange(updateSun);
+    folder.open();
+    
     function render(){
-        directionLight.position.x += guiControls.positionx;
         requestAnimationFrame(render);
         renderer.render(scene, camera);
     }
