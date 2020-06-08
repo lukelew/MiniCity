@@ -1599,5 +1599,17 @@ loader.load('./src/assets/car2.glb', function (gltf) {
     car2Animation(gltf.scene)
 });
 
+loader.load('./src/assets/hill.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(0.0,0,17.5);
+    gltf.scene.rotation.set(3.14, 0.0, 3.14);
+    gltf.scene.scale.set(0.7, 1.0, 0.5);
+    gltf.scene.name = 'hill'
+    scene.add(gltf.scene)
+});
 
 export { floor, moveableObjects }
