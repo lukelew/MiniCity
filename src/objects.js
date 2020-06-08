@@ -29,7 +29,7 @@ loader.load('./src/assets/forest.glb', function (gltf) {
         }
     });
     gltf.scene.position.set(22.9,0,22.3);
-    gltf.scene.name = 'forest1.1'
+    gltf.scene.name = 'forest1.1';
     scene.add(gltf.scene)
     moveableObjects.push(gltf.scene);
 });
