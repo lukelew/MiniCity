@@ -5,8 +5,8 @@ import { renderer } from './renderer';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Sky } from 'three/examples/jsm/objects/Sky';
 import { Ocean } from 'three/examples/jsm/misc/Ocean';
-import { floor, moveableObjects} from './objects';
-import { directionLight, ambientLight, lensFlare } from './lights';
+import { floor, moveableObjects, car1Animation, car2Animation} from './objects';
+import { directionLight } from './lights';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
 import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
@@ -14,11 +14,11 @@ import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
 
 var mouse, raycaster;
 var onMovingObject;
+var body = document.querySelector('body');
 var onMovingStatus = false;
 var editMode = false;
 
 function init() {
-    var body = document.querySelector('body');
     // add sky and the simulation of sun
     var sky = new Sky();
     var uniforms = sky.material.uniforms;
@@ -35,9 +35,7 @@ function init() {
         azimuth: 0.205
     };
 
-    // scene.background = new THREE.Color(0x97dbf7);
-
-    function updateSun(value) {
+    function updateSun() {
 
         var theta = Math.PI * (parameters.inclination - 0.5);
         var phi = 2 * Math.PI * (parameters.azimuth - 0.5);
@@ -46,19 +44,16 @@ function init() {
         directionLight.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
         directionLight.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta);
 
-        if (value > 0.5) {
-            // scene.background = new THREE.Color(0x000000);
+        if (parameters.inclination > 0.5) {
             body.className = 'dark'
             directionLight.visible = false;
         }
-        else if (value > 0.4 && value < 0.5) {
-            // scene.background = new THREE.Color(0xf2ab77);
+        else if (parameters.inclination > 0.35 && parameters.inclination < 0.5) {
             body.className = 'twilight'
             directionLight.visible = true
         }
         else {
             body.className = 'daylight'
-            // scene.background = new THREE.Color(0x97dbf7);
         }
     }
 
@@ -113,6 +108,8 @@ function init() {
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
+    var clock1 = new THREE.Clock();
+    var clock2 = new THREE.Clock();
 
     var UpdateLoop = function () {
         stats.begin();
@@ -121,6 +118,8 @@ function init() {
         orbitControls.update();
         // updateOcean()
         requestAnimationFrame(UpdateLoop);
+        car1Animation.update(clock1.getDelta())
+        car2Animation.update(clock2.getDelta())
     }
     requestAnimationFrame(UpdateLoop);
 
