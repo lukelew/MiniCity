@@ -57,55 +57,6 @@ function init() {
         }
     }
 
-    // add ocean as a lake
-    // var ocean = new Ocean(renderer, camera, scene,
-    //     {
-    //         USE_HALF_FLOAT: false,
-    //         INITIAL_SIZE: 3000,
-    //         INITIAL_WIND: [10.0, 10.0],
-    //         INITIAL_CHOPPINESS: 1.5,
-    //         CLEAR_COLOR: [1.0, 1.0, 1.0, 0.0],
-    //         GEOMETRY_ORIGIN: [100, 200],
-    //         SUN_DIRECTION: [- 1.0, 1.0, 1.0],
-    //         OCEAN_COLOR: new THREE.Vector3(0.004, 0.016, 0.047),
-    //         SKY_COLOR: new THREE.Vector3(3.2, 9.6, 12.8),
-    //         EXPOSURE: 0.35,
-    //         GEOMETRY_RESOLUTION: 512,
-    //         GEOMETRY_SIZE: 10,
-    //         RESOLUTION: 512
-    //     })
-    // ocean.materialOcean.uniforms["u_projectionMatrix"] = { value: camera.projectionMatrix };
-    // ocean.materialOcean.uniforms["u_viewMatrix"] = { value: camera.matrixWorldInverse };
-    // ocean.materialOcean.uniforms["u_cameraPosition"] = { value: camera.position};
-    // scene.add(ocean.oceanMesh);
-
-    // var lastTime = (new Date()).getTime();
-    // function updateOcean() {
-
-    //     var currentTime = new Date().getTime();
-    //     ocean.deltaTime = (currentTime - lastTime) / 1000 || 0.0;
-    //     lastTime = currentTime;
-    //     ocean.render(ocean.deltaTime);
-    //     ocean.overrideMaterial = ocean.materialOcean;
-
-    //     if (ocean.changed) {
-
-    //         ocean.materialOcean.uniforms["u_size"].value = ocean.size;
-    //         ocean.materialOcean.uniforms["u_sunDirection"].value.set(ocean.sunDirectionX, ocean.sunDirectionY, ocean.sunDirectionZ);
-    //         ocean.materialOcean.uniforms["u_exposure"].value = ocean.exposure;
-    //         ocean.changed = false;
-
-    //     }
-
-    //     ocean.materialOcean.uniforms["u_normalMap"].value = ocean.normalMapFramebuffer.texture;
-    //     ocean.materialOcean.uniforms["u_displacementMap"].value = ocean.displacementMapFramebuffer.texture;
-    //     ocean.materialOcean.uniforms["u_projectionMatrix"].value = camera.projectionMatrix;
-    //     ocean.materialOcean.uniforms["u_viewMatrix"].value = camera.matrixWorldInverse;
-    //     ocean.materialOcean.uniforms["u_cameraPosition"].value = camera.position
-    //     ocean.materialOcean.depthTest = true;
-    //     renderer.render(scene, camera);
-    // }
-
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
     var clock1 = new THREE.Clock();
@@ -116,10 +67,9 @@ function init() {
         stats.end();
         renderer.render(scene, camera);
         orbitControls.update();
-        // updateOcean()
         requestAnimationFrame(UpdateLoop);
-        car1Animation.update(clock1.getDelta())
-        car2Animation.update(clock2.getDelta())
+        car1Animation.update(clock1.getDelta());
+        car2Animation.update(clock2.getDelta());
     }
     requestAnimationFrame(UpdateLoop);
 
