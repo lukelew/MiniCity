@@ -23,6 +23,54 @@ earth.position.y = -2.05;
 earth.name = "Earth"
 scene.add(earth)
 
+loader.load('./src/assets/bigfactory.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(17.5,0,17.8);
+    gltf.scene.scale.set(2.6, 2.6, 2.6);
+    gltf.scene.name = 'big factory'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/treebed.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(11,0,22.8);
+    gltf.scene.scale.set(2.3, 1.7,2.3);
+    gltf.scene.name = 'tree bed'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/treebed.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(23,0,22.8);
+    gltf.scene.scale.set(2.3, 1.7,2.3);
+    gltf.scene.name = 'tree bed'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
+loader.load('./src/assets/treebed.glb', function (gltf) {
+    gltf.scene.traverse(function (node) {
+        if (node.isMesh) {
+            node.castShadow = true;
+        }
+    });
+    gltf.scene.position.set(-7.5,0,22.8);
+    gltf.scene.scale.set(2.3, 1.7,2.3);
+    gltf.scene.name = 'tree bed'
+    scene.add(gltf.scene)
+    moveableObjects.push(gltf.scene);
+});
 
 loader.load('./src/assets/building2.glb', function (gltf) {
     gltf.scene.traverse(function (node) {
