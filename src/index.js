@@ -4,7 +4,8 @@ import { camera } from './camera';
 import { renderer } from './renderer';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { Sky } from 'three/examples/jsm/objects/Sky';
-import { floor, moveableObjects} from './objects';
+import { Ocean } from 'three/examples/jsm/misc/Ocean';
+import { floor, moveableObjects, car1Animation, car2Animation} from './objects';
 import { directionLight } from './lights';
 import * as Stats from 'stats.js';
 import * as dat from 'dat.gui';
@@ -13,11 +14,12 @@ import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
 
 var mouse, raycaster;
 var onMovingObject;
+var body = document.querySelector('body');
 var onMovingStatus = false;
 var editMode = false;
 
 function init() {
-
+    // add sky and the simulation of sun
     var sky = new Sky();
     var uniforms = sky.material.uniforms;
 
@@ -33,11 +35,6 @@ function init() {
         azimuth: 0.205
     };
 
-    var cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, { format: THREE.RGBFormat, generateMipmaps: true, minFilter: THREE.LinearMipmapLinearFilter });
-    var cubeCamera = new THREE.CubeCamera(0.1, 1, cubeRenderTarget);
-
-    scene.background = new THREE.Color(0x97dbf7);
-
     function updateSun() {
 
         var theta = Math.PI * (parameters.inclination - 0.5);
@@ -47,23 +44,82 @@ function init() {
         directionLight.position.y = parameters.distance * Math.sin(phi) * Math.sin(theta);
         directionLight.position.z = parameters.distance * Math.sin(phi) * Math.cos(theta);
 
-        sky.material.uniforms['sunPosition'].value = directionLight.position.copy(directionLight.position);
-
-        cubeCamera.update(renderer, sky);
-
+        if (parameters.inclination > 0.5) {
+            body.className = 'dark'
+            directionLight.visible = false;
+        }
+        else if (parameters.inclination > 0.35 && parameters.inclination < 0.5) {
+            body.className = 'twilight'
+            directionLight.visible = true
+        }
+        else {
+            body.className = 'daylight'
+        }
     }
 
-    updateSun();
+    // add ocean as a lake
+    // var ocean = new Ocean(renderer, camera, scene,
+    //     {
+    //         USE_HALF_FLOAT: false,
+    //         INITIAL_SIZE: 3000,
+    //         INITIAL_WIND: [10.0, 10.0],
+    //         INITIAL_CHOPPINESS: 1.5,
+    //         CLEAR_COLOR: [1.0, 1.0, 1.0, 0.0],
+    //         GEOMETRY_ORIGIN: [100, 200],
+    //         SUN_DIRECTION: [- 1.0, 1.0, 1.0],
+    //         OCEAN_COLOR: new THREE.Vector3(0.004, 0.016, 0.047),
+    //         SKY_COLOR: new THREE.Vector3(3.2, 9.6, 12.8),
+    //         EXPOSURE: 0.35,
+    //         GEOMETRY_RESOLUTION: 512,
+    //         GEOMETRY_SIZE: 10,
+    //         RESOLUTION: 512
+    //     })
+    // ocean.materialOcean.uniforms["u_projectionMatrix"] = { value: camera.projectionMatrix };
+    // ocean.materialOcean.uniforms["u_viewMatrix"] = { value: camera.matrixWorldInverse };
+    // ocean.materialOcean.uniforms["u_cameraPosition"] = { value: camera.position};
+    // scene.add(ocean.oceanMesh);
+
+    // var lastTime = (new Date()).getTime();
+    // function updateOcean() {
+
+    //     var currentTime = new Date().getTime();
+    //     ocean.deltaTime = (currentTime - lastTime) / 1000 || 0.0;
+    //     lastTime = currentTime;
+    //     ocean.render(ocean.deltaTime);
+    //     ocean.overrideMaterial = ocean.materialOcean;
+
+    //     if (ocean.changed) {
+
+    //         ocean.materialOcean.uniforms["u_size"].value = ocean.size;
+    //         ocean.materialOcean.uniforms["u_sunDirection"].value.set(ocean.sunDirectionX, ocean.sunDirectionY, ocean.sunDirectionZ);
+    //         ocean.materialOcean.uniforms["u_exposure"].value = ocean.exposure;
+    //         ocean.changed = false;
+
+    //     }
+
+    //     ocean.materialOcean.uniforms["u_normalMap"].value = ocean.normalMapFramebuffer.texture;
+    //     ocean.materialOcean.uniforms["u_displacementMap"].value = ocean.displacementMapFramebuffer.texture;
+    //     ocean.materialOcean.uniforms["u_projectionMatrix"].value = camera.projectionMatrix;
+    //     ocean.materialOcean.uniforms["u_viewMatrix"].value = camera.matrixWorldInverse;
+    //     ocean.materialOcean.uniforms["u_cameraPosition"].value = camera.position
+    //     ocean.materialOcean.depthTest = true;
+    //     renderer.render(scene, camera);
+    // }
 
     // controls part
     var orbitControls = new OrbitControls(camera, renderer.domElement)
+    var clock1 = new THREE.Clock();
+    var clock2 = new THREE.Clock();
 
     var UpdateLoop = function () {
         stats.begin();
         stats.end();
         renderer.render(scene, camera);
         orbitControls.update();
+        // updateOcean()
         requestAnimationFrame(UpdateLoop);
+        car1Animation.update(clock1.getDelta())
+        car2Animation.update(clock2.getDelta())
     }
     requestAnimationFrame(UpdateLoop);
 
@@ -74,18 +130,14 @@ function init() {
 
     // dat.Gui
     var gui = new dat.GUI();
-    gui.add(directionLight, 'intensity', -10, 20);
-
-    var folder = gui.addFolder('Sky');
-    folder.add(parameters, 'inclination', 0, 0.5, 0.0001).onChange(updateSun);
-    folder.add(parameters, 'azimuth', 0, 1, 0.0001).onChange(updateSun);
+    var folder = gui.addFolder('DirectionalLight');
+    folder.add(directionLight, 'intensity', -10, 10);
     folder.open();
 
-    function render(){
-        requestAnimationFrame(render);
-        renderer.render(scene, camera);
-    }
-    render();
+    var folder = gui.addFolder('Sky');
+    folder.add(parameters, 'inclination', 0, 0.6, 0.0001).onChange(updateSun);
+    folder.add(parameters, 'azimuth', 0, 1, 0.0001).onChange(updateSun);
+    folder.open();
 
     window.addEventListener( 'resize', onWindowResize, false );
     function onWindowResize() {
@@ -93,11 +145,14 @@ function init() {
     	camera.updateProjectionMatrix();
     	renderer.setSize( window.innerWidth, window.innerHeight );
     }
-    create();
+
+    createTerrain();
+
+    console.log(moveableObjects);
 }
 
 //terrain//
-function create(){
+function createTerrain(){
     function funZ(width, height) {
     var size = width * height;
     var data = new Uint8Array(size);
@@ -119,11 +174,8 @@ function create(){
         data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
         console.log(y);
             }
-    // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
-        quality *= 5;
-        }
 
-    return data;
+        return data;
 
     }
 var width =100, height =100;
@@ -152,7 +204,6 @@ mesh.scale.set(0.25, -0.330, -0.200);
 scene.add(mesh);
 }
 
-//terrain//
 
 function mouseDownToSelectObj(e) {
     e.preventDefault();
