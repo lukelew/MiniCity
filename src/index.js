@@ -104,9 +104,9 @@ function create(){
     var perlin = new ImprovedNoise();
   // 控制地面显示效果  可以尝试0.01  0.1  1等不值
   // 0.1凹凸不平的地面效果  1山脉地形效果
-    var quality = 1;
+    var quality = 0.15;
   // z值不同每次执行随机出来的地形效果不同
-    var z = 70000;
+    var z = 100;
     for (var j = 0; j < 4; j++) {
         for (var i = 0; i < size; i++) {
       // x的值0 1 2 3 4 5 6...
@@ -126,11 +126,11 @@ function create(){
     return data;
 
     }
-var width = 50, height = 50;
+var width =100, height =100;
 // 生成地形顶点高度数据
 var data = funZ(width, height);
 //创建一个平面地形，行列两个方向顶点数据分别为width，height
-var geometry = new THREE.PlaneBufferGeometry(40, 40, width - 1, height - 1);
+var geometry = new THREE.PlaneBufferGeometry(57, 77, width - 1, height - 1);
 geometry.rotateX(-Math.PI / 2);
 // 访问几何体的顶点位置坐标数据
 var vertices = geometry.attributes.position.array;
@@ -146,8 +146,8 @@ var material = new THREE.MeshLambertMaterial({
   side: THREE.DoubleSide,
 });
 var mesh = new THREE.Mesh(geometry, material);
-mesh.position.set(-0.600, -6.900, 19.770);
-mesh.rotation.set(23.490, 6.90, 4.650);
+mesh.position.set(2.600, -1, 17.770);
+mesh.rotation.set(23.490, 20.4, 4.7);
 mesh.scale.set(0.25, -0.330, -0.200);
 scene.add(mesh);
 }
