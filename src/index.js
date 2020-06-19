@@ -154,42 +154,43 @@ function init() {
 //terrain//
 function createTerrain(){
     function funZ(width, height) {
-        var size = width * height;
-        var data = new Uint8Array(size);
-        var perlin = new ImprovedNoise();
-        var quality = 1;
-        var z = 70000;
-        for (var j = 0; j < 4; j++) {
-            for (var i = 0; i < size; i++) {
-            var x = i % width;
-            var y = ~~(i / width);
-            data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
-                }
-            quality *= 5;
+    var size = width * height;
+    var data = new Uint8Array(size);
+    var perlin = new ImprovedNoise();
+    var quality = 0.15;
+    var z = 100;
+    for (var j = 0; j < 4; j++) {
+        for (var i = 0; i < size; i++) {
+        var x = i % width;
+        var y = ~~(i / width);
+        data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
+        console.log(y);
             }
+        quality *= 5;
+        }
 
-        return data;
+    return data;
 
     }
-    var width = 50, height = 50;
-    var data = funZ(width, height);
-    var geometry = new THREE.PlaneBufferGeometry(40, 40, width - 1, height - 1);
-    geometry.rotateX(-Math.PI / 2);
-    var vertices = geometry.attributes.position.array;
-    for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-        vertices[j + 1] = data[i] * 0.8;
-    }
-    geometry.computeVertexNormals();
+var width =100, height =100;
+var data = funZ(width, height);
+var geometry = new THREE.PlaneBufferGeometry(57, 77, width - 1, height - 1);
+geometry.rotateX(-Math.PI / 2);
+var vertices = geometry.attributes.position.array;
+for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+  vertices[j + 1] = data[i] * 0.8;
+}
+geometry.computeVertexNormals();
 
-    var material = new THREE.MeshLambertMaterial({
-        color: 0x3E2E20,
-        side: THREE.DoubleSide,
-    });
-    var mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(-0.600, -6.900, 19.770);
-    mesh.rotation.set(23.490, 6.90, 4.650);
-    mesh.scale.set(0.25, -0.330, -0.200);
-    scene.add(mesh);
+var material = new THREE.MeshLambertMaterial({
+  color: 0x3E2E20,
+  side: THREE.DoubleSide,
+});
+var mesh = new THREE.Mesh(geometry, material);
+mesh.position.set(2.600, -1, 17.770);
+mesh.rotation.set(23.490, 20.4, 4.7);
+mesh.scale.set(0.25, -0.330, -0.200);
+scene.add(mesh);
 }
 
 
