@@ -3,7 +3,7 @@ import { scene } from './scene';
 import { floor } from './objects';
 import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare.js';
 
-var directionLight = new THREE.DirectionalLight(0xffffff, 1)
+var directionLight = new THREE.DirectionalLight(0xffffff, 0.8)
 directionLight.position.x = 80;
 directionLight.position.y = 20;
 directionLight.castShadow = true;
@@ -13,6 +13,11 @@ directionLight.shadow.camera.top = 50
 directionLight.shadow.camera.bottom = -50
 directionLight.target = floor;
 scene.add(directionLight);
+
+var spotLight = new THREE.SpotLight(0xccccc, 0.3);
+spotLight.position.set(80,20);
+spotLight.target = floor;
+scene.add(spotLight);
 
 var textureLoader = new THREE.TextureLoader();
 var textureFlare0 = textureLoader.load( "./src/assets/LensFlare.png");
@@ -24,4 +29,6 @@ directionLight.add(lensFlare);
 var ambientLight = new THREE.AmbientLight(new THREE.Color(1,1,1), 1);
 scene.add(ambientLight);
 
-export { directionLight, ambientLight, lensFlare };
+export { directionLight };
+export { ambientLight };
+export { spotLight };

@@ -1,6 +1,10 @@
 import * as THREE from 'three';
+import { scene } from './scene';
+import { camera } from './camera';
+import { renderer } from './renderer';
 
-function car1Mixer(car) {
+
+function car1Animation(car) {
     var time1 = [0, 5, 15, 20, 25];
     var route = [-3,0.05,10, 24.5,0.05,10, 24.5,0.05,-24.5, -3,0.05,-24.5, -3,0.05,10];
     var time2 = [
@@ -29,10 +33,18 @@ function car1Mixer(car) {
 
     action1.setLoop(THREE.LoopRepeat, 'Infinity').play();
 
-    return mixer1
+    var clock = new THREE.Clock();
+
+    function render() {
+        renderer.render(scene, camera); 
+        requestAnimationFrame(render); 
+        mixer1.update(clock.getDelta());
+    }
+    render();
+
 }
 
-function car2Mixer(car) {
+function car2Animation(car) {
     var time1 = [0, 15, 20, 35, 40];
     var route = [-24.5,0.05,-4.05, 24.5,0.05,-4.05, 24.5,0.05,-24.5, -24.5,0.05,-24.5, -24.5,0.05,-4.05];
     var time2 = [
@@ -61,7 +73,15 @@ function car2Mixer(car) {
 
     action2.setLoop(THREE.LoopRepeat, 'Infinity').play();
 
-    return mixer2
+    var clock = new THREE.Clock();
+
+    function render() {
+        renderer.render(scene, camera);
+        requestAnimationFrame(render);
+        mixer2.update(clock.getDelta());
+    }
+    render();
+
 }
 
-export { car1Mixer, car2Mixer }
+export { car1Animation, car2Animation }

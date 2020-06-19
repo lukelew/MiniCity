@@ -4,17 +4,7 @@
     font-family: sans-serif;
 }
 body {
-    transition: all ease 2s;
-    
-}
-body.daylight {
-    background: #0199ff;
-}
-body.twilight {
-    background: #f2ab77;
-}
-body.dark {
-    background: #000;
+    /* background: linear-gradient(#d5e966, #3f95b9); */
 }
 #UIbox {
     position: fixed;

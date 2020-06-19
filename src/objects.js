@@ -1,11 +1,10 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { scene } from './scene';
-import { car1Mixer, car2Mixer } from './animation'
+import { car1Animation, car2Animation } from './animation'
 
 var loader = new GLTFLoader();
 var moveableObjects = [];
-var car1Animation, car2Animation;
 
 var floorGeometry = new THREE.PlaneGeometry(50, 50);
 var floorMaterial = new THREE.MeshLambertMaterial({ color: 0x365931, side: THREE.DoubleSide});
@@ -1500,7 +1499,7 @@ loader.load('./src/assets/car1.glb', function (gltf) {
     gltf.scene.scale.set(0.7, 1.0, 0.72);
     gltf.scene.name = 'car1'
     scene.add(gltf.scene)
-    car1Animation = car1Mixer(gltf.scene)
+    car1Animation(gltf.scene)
 });
 
 loader.load('./src/assets/car2.glb', function (gltf) {
@@ -1513,7 +1512,7 @@ loader.load('./src/assets/car2.glb', function (gltf) {
     gltf.scene.scale.set(0.7, 1.0, 0.72);
     gltf.scene.name = 'car2'
     scene.add(gltf.scene)
-    car2Animation = car2Mixer(gltf.scene)
+    car2Animation(gltf.scene)
 });
 
 loader.load('./src/assets/hill.glb', function (gltf) {
@@ -1529,4 +1528,4 @@ loader.load('./src/assets/hill.glb', function (gltf) {
     scene.add(gltf.scene)
 });
 
-export { floor, moveableObjects, car1Animation, car2Animation}
+export { floor, moveableObjects }
