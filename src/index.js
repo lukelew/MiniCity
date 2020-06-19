@@ -102,24 +102,15 @@ function create(){
     var size = width * height;
     var data = new Uint8Array(size);
     var perlin = new ImprovedNoise();
-  // 控制地面显示效果  可以尝试0.01  0.1  1等不值
-  // 0.1凹凸不平的地面效果  1山脉地形效果
     var quality = 0.15;
-  // z值不同每次执行随机出来的地形效果不同
     var z = 100;
     for (var j = 0; j < 4; j++) {
         for (var i = 0; i < size; i++) {
-      // x的值0 1 2 3 4 5 6...
         var x = i % width;
-      // ~表示按位取反 两个~就是按位取反后再取反
-      // ~~相当于Math.floor(),效率高一点
-      // y重复若干个值
         var y = ~~(i / width);
-      // 通过噪声生成数据
         data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
         console.log(y);
             }
-    // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
         quality *= 5;
         }
 
@@ -127,18 +118,14 @@ function create(){
 
     }
 var width =100, height =100;
-// 生成地形顶点高度数据
 var data = funZ(width, height);
-//创建一个平面地形，行列两个方向顶点数据分别为width，height
 var geometry = new THREE.PlaneBufferGeometry(57, 77, width - 1, height - 1);
 geometry.rotateX(-Math.PI / 2);
-// 访问几何体的顶点位置坐标数据
 var vertices = geometry.attributes.position.array;
 // 改变顶点高度值
 for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
   vertices[j + 1] = data[i] * 0.8;
 }
-// 不执行computeVertexNormals，没有顶点法向量数据
 geometry.computeVertexNormals();
 
 var material = new THREE.MeshLambertMaterial({
