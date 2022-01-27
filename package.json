@@ -15,7 +15,7 @@
     "http-server": "^0.12.3",
     "npm-watch": "^0.6.0",
     "stats.js": "^0.17.0",
-    "three": "^0.115.0",
+    "three": "^0.137.0",
     "webpack": "^4.42.1"
   },
   "devDependencies": {
