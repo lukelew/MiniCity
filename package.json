@@ -16,10 +16,10 @@
     "npm-watch": "^0.6.0",
     "stats.js": "^0.17.0",
     "three": "^0.115.0",
-    "webpack": "^4.42.1"
+    "webpack": "^5.75.0"
   },
   "devDependencies": {
-    "webpack-cli": "^3.3.11",
+    "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^3.11.0"
   }
 }
